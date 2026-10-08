@@ -1,1 +1,1 @@
-# Sistema-de-Votaci-n-Biometrico
+# Sistema-de-Votación-Biometrico
