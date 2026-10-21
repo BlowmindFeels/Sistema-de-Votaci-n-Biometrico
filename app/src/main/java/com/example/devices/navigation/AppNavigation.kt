@@ -44,8 +44,8 @@ fun AppNavigation() {
         ) { entry ->
             val id = entry.arguments?.getInt("votacionId") ?: 0
             DetalleVotacionScreen(
-                votacionId = id,
-                onVerResultados = { navController.navigate(Routes.resultados(id)) }
+                onVerResultados = { navController.navigate(Routes.resultados(id)) },
+                onVolver = { navController.popBackStack() }
             )
         }
 

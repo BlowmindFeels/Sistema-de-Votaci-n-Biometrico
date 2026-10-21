@@ -2,9 +2,9 @@ package com.example.devices.navigation
 
 object Routes {
     const val LOGIN = "login"
+    const val REGISTRO = "registro"
     const val VOTACIONES = "votaciones"
 
-    const val REGISTRO = "registro"
     const val DETALLE = "detalle/{votacionId}"
     fun detalle(id: Int) = "detalle/$id"
 
