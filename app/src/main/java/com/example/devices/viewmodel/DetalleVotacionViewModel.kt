@@ -18,9 +18,11 @@ data class DetalleUiState(
     val opcionSeleccionada: Int? = null,
     val yaVoto: Boolean = false,
     val mostrarConfirmacion: Boolean = false,
+    val pedirHuella: Boolean = false,
     val enviando: Boolean = false,
     val error: String? = null
 )
+
 
 class DetalleVotacionViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
@@ -56,16 +58,24 @@ class DetalleVotacionViewModel(savedStateHandle: SavedStateHandle) : ViewModel()
     fun cancelarConfirmacion() =
         _state.update { it.copy(mostrarConfirmacion = false) }
 
+    // 1. El usuario pulsó "Votar" en el diálogo: ya no vota, solo pide la huella.
     fun confirmarVoto() {
+        _state.update { it.copy(mostrarConfirmacion = false, pedirHuella = true, error = null) }
+    }
+
+    // 2. La huella salió bien: ahora sí se registra el voto.
+    fun huellaExitosa() {
         val opcionId = _state.value.opcionSeleccionada ?: return
         viewModelScope.launch {
-            _state.update { it.copy(mostrarConfirmacion = false, enviando = true, error = null) }
-
-            // PASO 3: aquí se pedirá la huella antes de llamar a repo.votar()
-
+            _state.update { it.copy(pedirHuella = false, enviando = true) }
             repo.votar(votacionId, opcionId)
                 .onSuccess { _state.update { it.copy(enviando = false, yaVoto = true) } }
                 .onFailure { e -> _state.update { it.copy(enviando = false, error = e.message) } }
         }
+    }
+
+    // 3. La huella se canceló o falló: no se vota.
+    fun huellaFallida(mensaje: String?) {
+        _state.update { it.copy(pedirHuella = false, error = mensaje) }
     }
 }

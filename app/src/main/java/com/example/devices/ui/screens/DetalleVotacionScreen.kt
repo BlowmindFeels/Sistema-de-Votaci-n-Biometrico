@@ -20,6 +20,10 @@ import com.example.devices.data.Votacion
 import com.example.devices.ui.components.EstadoBadge
 import com.example.devices.viewmodel.DetalleUiState
 import com.example.devices.viewmodel.DetalleVotacionViewModel
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import com.example.devices.util.Biometria
+import com.example.devices.util.findFragmentActivity
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,7 +34,25 @@ fun DetalleVotacionScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val votacion = state.votacion
+    val context = LocalContext.current
 
+    LaunchedEffect(state.pedirHuella) {
+        if (!state.pedirHuella) return@LaunchedEffect
+
+        val motivo = Biometria.mensajeNoDisponible(context)
+        val activity = context.findFragmentActivity()
+
+        when {
+            motivo != null -> viewModel.huellaFallida(motivo)
+            activity == null -> viewModel.huellaFallida("No se pudo abrir la verificación de huella")
+            else -> Biometria.autenticar(
+                activity = activity,
+                onExito = viewModel::huellaExitosa,
+                onCancelado = { viewModel.huellaFallida(null) },
+                onError = { msg -> viewModel.huellaFallida(msg) }
+            )
+        }
+    }
     Scaffold(
         topBar = {
             TopAppBar(
