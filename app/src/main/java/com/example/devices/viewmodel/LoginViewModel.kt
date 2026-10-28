@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import com.example.devices.data.AuthRepository
-import com.example.devices.data.FakeAuthRepository
+import com.example.devices.data.FirebaseAuthRepository
 import com.example.devices.util.Validadores
 
 data class LoginUiState(
@@ -24,7 +24,7 @@ data class LoginUiState(
 
 class LoginViewModel : ViewModel() {
 
-    private val repo: AuthRepository = FakeAuthRepository
+    private val repo: AuthRepository = FirebaseAuthRepository
 
     private val _state = MutableStateFlow(LoginUiState())
     val state: StateFlow<LoginUiState> = _state.asStateFlow()
@@ -52,7 +52,7 @@ class LoginViewModel : ViewModel() {
         viewModelScope.launch {
             _state.update { it.copy(cargando = true, errorGeneral = null) }
             repo.login(s.documento, s.password)
-                .onSuccess { _token ->
+                .onSuccess { _ ->
                     // El token se guardará de forma segura en el paso de biometría.
                     _state.update { it.copy(cargando = false, loginExitoso = true) }
                 }

@@ -1,0 +1,31 @@
+
+
+{
+  "project_info": {
+    "project_number": "1049670172306",
+    "project_id": "sistema-distri-db",
+    "storage_bucket": "sistema-distri-db.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049670172306:android:6d2d66ad3c874c2c4db04b",
+        "android_client_info": {
+          "package_name": "com.example.devices"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVPYlyvPfFgRWhwQvKp51kRFWZL8LLH_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

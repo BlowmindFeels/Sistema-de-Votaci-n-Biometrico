@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import com.example.devices.data.AuthRepository
-import com.example.devices.data.FakeAuthRepository
 import com.example.devices.util.Validadores
+import com.example.devices.data.FirebaseAuthRepository
 
 data class RegistroUiState(
     val nombre: String = "",
@@ -28,7 +28,7 @@ data class RegistroUiState(
 
 class RegistroViewModel : ViewModel() {
 
-    private val repo: AuthRepository = FakeAuthRepository
+    private val repo: AuthRepository = FirebaseAuthRepository
 
     private val _state = MutableStateFlow(RegistroUiState())
     val state: StateFlow<RegistroUiState> = _state.asStateFlow()
